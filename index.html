@@ -5,21 +5,40 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>ClickQuest - An Incremental RPG</title>   
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
     	<script src="world.js"></script>
     	<script src="game.js"></script>
     </head>
     <body>
         <h1>ClickQuest - An Incremental RPG</h1>
+        <div id="wrapper">
+        	<div class="colLeft">
+        		
+        	</div>
+        	<div class="colRight">
+        		
+        	</div>
+        </div>
         <div id="hero">
         	Name:<span id="heroName">&nbsp;</span><br />
         	Level:<span id="heroLevel">&nbsp;</span><br />
         	Exp:<span id="heroExp">&nbsp;</span><br />
-        	HP:<span id="heroHP">&nbsp;</span><br />
+        	<div id="heroHp" style="width:100px;"><div class="progress-label"></div></div><br />
         	Gold:<span id="heroGold">&nbsp;</span><br />
         </div>
         <div id="buttons">
         	<input id="fight" type="button" value="Fight" /><br />
         	<span id="battle">&nbsp;</span>
         </div>
+        
+        <div id="dialog-form" title="Name Your Hero!">
+  			<form>
+				<fieldset>
+		    		<label for="name">Name</label>
+	    			<input type="text" name="name" id="name">
+				</fieldset>
+		 	</form>
+		</div>
     </body>
 </html>
