@@ -6,17 +6,22 @@
 var hero = {
 	name: "Nameless Hero",
 	level: 1,
-	atk: 1,
-	def: 1,
+	exp: 0,
+	sp: 0,
 	hp: 10,
 	maxHp:10,
+	atk: 1,
+	def: 1,
 	recovery: {
 		amt: 1,
-		rate: 1000
+		rate: 100
 	},
-	exp: 0,
 	gold: 0	
 };
+
+function getLevelUp(){
+	return (1 * Math.pow( (hero.level + 1) , 2) );
+}
 
 //STARTUP
 $(document).ready(function () {
@@ -57,22 +62,42 @@ $(document).ready(function () {
 
 function updateValues() {
 	$("#heroName").html(hero.name);
-	$("#heroLevel").html(hero.level);
+	//$("#heroLevel").html(hero.level + " (" + hero.exp + "/" + getLevelUp() + ")" ); 
 	//$("#heroHP").html(hero.hp);
-	$("#heroExp").html(hero.exp);
+	$("#heroSP").html(hero.sp);
 	$("#heroGold").html(hero.gold);
 	updateHP();
+	updateExp();
 };
 
 function updateHP() {
 	var heroHp = $( "#heroHp" ),
-      progressLabel = $( ".progress-label" );
+      progressLabel = heroHp.children( ".progress-label" );
  
     heroHp.progressbar({
       value: hero.hp,
       max: hero.maxHp
     });
     progressLabel.text("HP:" + hero.hp + "/" + hero.maxHp);
+};
+
+function updateExp() {
+	var heroExp = $( "#heroExp" ),
+      progressLabel = heroExp.children( ".progress-label" );
+ 
+    heroExp.progressbar({
+      value: hero.exp,
+      max: getLevelUp()
+    });
+    progressLabel.text("Level: " + hero.level + " (" + hero.exp + "/" + getLevelUp() + ")");
+};
+
+function checkLevelUp(){
+	if (hero.exp >= getLevelUp())
+	{
+		hero.level += 1;
+		hero.exp = 0;
+	}
 };
 
 
@@ -94,8 +119,10 @@ function fight(hero, creature){
 		$("#battle").append("You killed the " + creature.name + "!<br />");
 		$("#battle").append("The " + creature.name + " dropped " + creature.goldDrop + " gold!<br />");
 		hero.exp += creature.exp ;
+		hero.sp += creature.exp;
 		hero.gold += creature.goldDrop;
 	}
+	checkLevelUp();
 	updateValues();
 }
 
