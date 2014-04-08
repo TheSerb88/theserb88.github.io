@@ -14,7 +14,7 @@ var hero = {
 	def: 1,
 	recovery: {
 		amt: 1,
-		rate: 100
+		rate: 1000
 	},
 	gold: 0	
 };
@@ -22,6 +22,12 @@ var hero = {
 function getLevelUp(){
 	return (1 * Math.pow( (hero.level + 1) , 2) );
 }
+
+var fillHealth = setInterval(function () {
+		hero.hp += hero.recovery.amt;
+		if(hero.hp > hero.maxHp) {hero.hp = hero.maxHp;}
+		updateHP();
+	}, hero.recovery.rate);
 
 //STARTUP
 $(document).ready(function () {
@@ -51,14 +57,26 @@ $(document).ready(function () {
 		fight(hero,monster);		
 	});
 	
-	var fillHealth = setInterval(function () {
-		hero.hp += hero.recovery.amt;
-		if(hero.hp > hero.maxHp) {hero.hp = hero.maxHp;}
-		updateHP();
-	}, hero.recovery.rate);
-
+	$(".upgradebuttons :button").click(function(){
+		if (this.id == "upHP"){
+			hero.maxHp += 10;
+			hero.hp += 10;
+		}else if(this.id == "upRate"){
+			hero.recovery.rate -= (hero.recovery.rate * .1);
+			fillHealth = updateRecovery();
+		}
+	});
 	
+		
 });
+
+function updateRecovery() {
+	return setInterval(function () {
+				hero.hp += hero.recovery.amt;
+				if(hero.hp > hero.maxHp) {hero.hp = hero.maxHp;}
+				updateHP();
+			}, hero.recovery.rate);
+}
 
 function updateValues() {
 	$("#heroName").html(hero.name);
@@ -68,6 +86,13 @@ function updateValues() {
 	$("#heroGold").html(hero.gold);
 	updateHP();
 	updateExp();
+
+	
+	if (hero.level > 1) {
+		$(".upgradebuttons").show();
+	} else{
+		$(".upgradebuttons").hide();
+	}
 };
 
 function updateHP() {
